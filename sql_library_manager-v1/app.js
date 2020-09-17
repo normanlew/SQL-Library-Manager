@@ -1,10 +1,3 @@
-// const Sequelize = require('sequelize');
-
-// const sequelize = new Sequelize({
-//     dialect: 'sqlite',
-//     storage: 'library.db',
-//   });
-
 const db = require('./db');
 const Book = db.Book;
 
@@ -18,11 +11,6 @@ const routes = require('./routes/index');
 const books = require('./routes/books');
 
 // view engine setup
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'pug');
-// // app.use(express.static(path.join(__dirname, 'public')));
-app.use('/static', express.static('public'));
-
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
@@ -30,6 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+app.use('/static', express.static('public'));
 
 app.use('/', routes);
 app.use('/books', books);   
@@ -61,12 +50,10 @@ app.use( (req, res, next) => {
   
 // error handler
 app.use( (err, req, res, next) => {
-    console.log('entering error handler'); 
     if (err.status === 404) {
         res.render('./books/page-not-found');
     }
     else {
-        console.log('not a 404 error');
         res.status(err.status || 500);
         res.render('./books/server-error', {
           message: err.message,
@@ -76,6 +63,6 @@ app.use( (err, req, res, next) => {
 });
 
 app.listen(3000, () => {
-    console.log('Programming running')
+    console.log('Program running')
 });
 
